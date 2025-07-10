@@ -23,14 +23,14 @@ function createNewsFeed() {
 
 const newsFeed = createNewsFeed();
 
-newsFeed.on("newsEvent", (v) => {
-    console.log("Received: ", v)
-})
+newsFeed.on("newsEvent", (value) => {
+  console.log("Received: ", value);
+});
 
-newsFeed.on("breakingNews", (v) => {
-    console.log("Received: ", v)
-})
+newsFeed.on("breakingNews", (value) => {
+  console.log("Received: ", value);
+});
 
-newsFeed.on("error", (v) => {
-    console.log("Received: ", v)
-})
+newsFeed.on("error", (value) => {
+  console.log("Received: ", value);
+});
