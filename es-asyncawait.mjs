@@ -19,14 +19,13 @@ function luckyDraw(player) {
 async function getResults() {
   const players = ["Tina", "Jorge", "Julien"];
 
-  try {
-    for (const player of players) {
+  for (const player of players)
+    try {
       const res = await luckyDraw(player);
-      console.log(res)
+      console.log(res);
+    } catch (err) {
+      console.log(err);
     }
-  } catch (err) {
-    console.log(err);
-  }
 }
 
-getResults()
+getResults();
