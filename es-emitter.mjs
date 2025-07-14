@@ -21,8 +21,6 @@ function createNewsFeed() {
   return emitter;
 }
 
-const newsFeed = createNewsFeed();
-
 newsFeed.on("newsEvent", (value) => {
   console.log("Received: ", value);
 });
@@ -34,3 +32,5 @@ newsFeed.on("breakingNews", (value) => {
 newsFeed.on("error", (value) => {
   console.log("Received: ", value);
 });
+
+const newsFeed = createNewsFeed();
