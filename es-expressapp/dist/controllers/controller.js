@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteById = exports.updateById = exports.create = exports.getOneById = exports.getAll = void 0;
+exports.createImage = exports.deleteById = exports.updateById = exports.create = exports.getOneById = exports.getAll = void 0;
 const db_js_1 = __importDefault(require("../db.js"));
 // type Planets = Planet[];
 // let planets: Planets = [
@@ -88,3 +88,17 @@ function deleteById(req, res) {
     });
 }
 exports.deleteById = deleteById;
+function createImage(req, res) {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        const id = Number(req.params.id);
+        const filePath = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
+        if (!filePath) {
+            console.log(filePath);
+            return res.status(400).json({ message: "Nessun file ricevuto :(" });
+        }
+        yield db_js_1.default.none("UPDATE planets SET image = $1 WHERE id = $2", [filePath, id]);
+        res.status(201).json({ message: "Immagine caricata correttamente! :)" });
+    });
+}
+exports.createImage = createImage;

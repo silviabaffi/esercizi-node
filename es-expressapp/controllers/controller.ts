@@ -70,3 +70,16 @@ export async function deleteById(req: Request, res: Response) {
   // planets = planets.filter((p) => p.id !== Number(id));
   res.status(200).json({ message: "Pianeta eliminato!" });
 }
+
+export async function createImage(req: Request, res: Response) {
+  const id = Number(req.params.id);
+  const filePath = req.file?.path;
+  if (!filePath) {
+    console.log(filePath)
+    return res.status(400).json({ message: "Nessun file ricevuto :(" });
+  }
+
+  await db.none("UPDATE planets SET image = $2 WHERE id = $1", [filePath, id]);
+
+  res.status(201).json({message: "Immagine caricata correttamente! :)"})
+}
