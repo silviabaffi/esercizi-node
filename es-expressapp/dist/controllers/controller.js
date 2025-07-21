@@ -64,9 +64,9 @@ function updateById(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { id } = req.params;
         const { name } = req.body;
-        const result = yield db_js_1.default.result("UPDATE planets SET name = $1 WHERE id = $2", [
-            name,
+        const result = yield db_js_1.default.result("UPDATE planets SET name = $2 WHERE id = $1", [
             id,
+            name,
         ]);
         if (result.rowCount === 0) {
             return res.status(404).json({ message: "Pianeta non trovato. :(" });

@@ -51,8 +51,8 @@ export async function updateById(req: Request, res: Response) {
   const { id } = req.params;
   const { name } = req.body;
   const result = await db.result("UPDATE planets SET name = $2 WHERE id = $1", [
-    name,
     id,
+    name,
   ]);
   if (result.rowCount === 0) {
     return res.status(404).json({ message: "Pianeta non trovato. :(" });
