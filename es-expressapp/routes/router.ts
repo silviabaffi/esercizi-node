@@ -5,7 +5,7 @@ import {
   create,
   updateById,
   deleteById,
-  createImage
+  createImage,
 } from "../controllers/controller.js";
 import { upload } from "../storage.js";
 

@@ -12,30 +12,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const db_js_1 = __importDefault(require("./db.js"));
-function setupDb() {
-    return __awaiter(this, void 0, void 0, function* () {
-        yield db_js_1.default.none(`
-        DROP TABLE IF EXISTS planets;
-
-        CREATE TABLE planets (
-            id SERIAL NOT NULL PRIMARY KEY,
-            name TEXT NOT NULL,
-            image TEXT
-        );
-
-        DROP TABLE IF EXISTS users;
-
-        CREATE TABLE users (
-          id SERIAL NOT NULL PRIMARY KEY,
-          username TEXT NOT NULL,
-          password TEXT NOT NULL,
-          token TEXT
-        )
-    `);
-        yield db_js_1.default.none("INSERT INTO planets (name) VALUES ('Earth'), ('Mars')");
-        yield db_js_1.default.none("INSERT INTO users (username, password) VALUES ('Silvia', 'ciao123')");
-        console.log("Setup DB completato");
-    });
-}
-exports.default = setupDb;
+const dotenv_1 = __importDefault(require("dotenv"));
+const passport_1 = __importDefault(require("passport"));
+const passport_jwt_1 = require("passport-jwt");
+const db_1 = __importDefault(require("./db"));
+dotenv_1.default.config();
+const secret = process.env.SECRET || "";
+const options = {
+    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: secret,
+};
+passport_1.default.use(new passport_jwt_1.Strategy(options, (payload, done) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield db_1.default.oneOrNone("SELECT * FROM users WHERE id = $1", payload.id);
+        if (user) {
+            return done(null, user);
+        }
+        else {
+            return done(null, false);
+        }
+    }
+    catch (error) {
+        return done(error, false);
+    }
+})));

@@ -97,7 +97,7 @@ function createImage(req, res) {
             console.log(filePath);
             return res.status(400).json({ message: "Nessun file ricevuto :(" });
         }
-        yield db_js_1.default.none("UPDATE planets SET image = $1 WHERE id = $2", [filePath, id]);
+        yield db_js_1.default.none("UPDATE planets SET image = $2 WHERE id = $1", [filePath, id]);
         res.status(201).json({ message: "Immagine caricata correttamente! :)" });
     });
 }
