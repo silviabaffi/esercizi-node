@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logIn = void 0;
+exports.signUp = exports.logOut = exports.logIn = void 0;
 const db_js_1 = __importDefault(require("../db.js"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -40,3 +40,25 @@ function logIn(req, res) {
     });
 }
 exports.logIn = logIn;
+function logOut(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const user = req.user;
+        yield db_js_1.default.none("UPDATE users SET token = $2 WHERE id = $1", [user === null || user === void 0 ? void 0 : user.id, null]);
+        res.status(200).json({ message: "Logout effettuato con successo." });
+    });
+}
+exports.logOut = logOut;
+function signUp(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { username, password } = req.body;
+        const user = yield db_js_1.default.oneOrNone("SELECT * FROM users WHERE username = $1", username);
+        if (user) {
+            res.status(400).json({ message: "Utente già presente" });
+        }
+        else {
+            const { id } = yield db_js_1.default.one("INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id", [username, password]);
+            res.status(201).json({ id, message: "Utente creato con successo!" });
+        }
+    });
+}
+exports.signUp = signUp;

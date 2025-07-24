@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import { router } from "./routes/router.js";
 import setupDb from "./setupdb.js";
 import { router as routerUser } from "./routes/routerUser.js";
+import "./middlewares/authorize.js";
+import "./passport.js";
 
 dotenv.config();
 setupDb();
